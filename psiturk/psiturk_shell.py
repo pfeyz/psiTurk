@@ -937,6 +937,7 @@ class PsiturkNetworkShell(PsiturkShell):
             ip_address = str(self.web_services.get_my_ip())
             port = str(self.config.get('Server Parameters', 'port'))
         port = 443
+        ip_address = 'https://{}'.format(ip_address)
         ad_content = {
             'psiturk_external': True,
             'server': ip_address,
