@@ -493,7 +493,8 @@ class PsiturkNetworkShell(PsiturkShell):
         print worker_dict
         worker = Participant.query.filter(
             Participant.assignmentid==worker_dict['assignmentId']).one()
-        return worker_dict.update({'bonus': worker.bonus})
+        worker_dict.update({'bonus': worker.bonus})
+        return worker_dict
 
     # +-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.
     #   worker management
