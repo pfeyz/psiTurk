@@ -488,10 +488,16 @@ class PsiturkNetworkShell(PsiturkShell):
         else:
             print 'AMT worker site - ' + colorize('live', 'bold') + ': ' + str(self.liveHITs) + ' HITs available'
 
+    @staticmethod
+    def add_bonus(worker_dict):
+        print worker_dict
+        worker = Participant.query.filter(
+            Participant.assignmentid==worker_dict['assignmentId']).one()
+        return worker_dict.update({'bonus': worker.bonus})
 
-    #+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.
-    #  worker management
-    #+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.
+    # +-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.
+    #   worker management
+    # +-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.
     def worker_list(self, submitted, approved, rejected, chosenHit):
         workers = None
         if submitted:
@@ -510,6 +516,8 @@ class PsiturkNetworkShell(PsiturkShell):
         if not len(workers):
             print "*** no workers match your request"
         else:
+            workers = [self.add_bonus(worker)
+                       for worker in workers]
             print json.dumps(workers, indent=4,
                              separators=(',', ': '))
 
