@@ -490,10 +490,13 @@ class PsiturkNetworkShell(PsiturkShell):
 
     @staticmethod
     def add_bonus(worker_dict):
-        print worker_dict
-        worker = Participant.query.filter(
-            Participant.assignmentid==worker_dict['assignmentId']).one()
-        worker_dict.update({'bonus': worker.bonus})
+        try:
+            worker = Participant.query.filter(
+                Participant.assignmentid==worker_dict['assignmentId']).one()
+            worker_dict.update({'bonus': worker.bonus})
+        except:
+            # assignment is found on mturk but not in local database.
+            worker_dict.update({'bonus': 'N/A'})
         return worker_dict
 
     # +-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.+-+.
